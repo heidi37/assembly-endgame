@@ -5,4 +5,16 @@
   text-align: center;
 }
 
+.status {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  margin: 1rem 0;
+  color: #F9F4DA;
+  border-radius: 4px;
+}
 
+.won {
+  background: #10A95B;
+}
