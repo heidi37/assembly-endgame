@@ -1,5 +1,5 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Hanken Grotesk", sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -23,7 +23,7 @@ a:hover {
 }
 
 body {
-  margin: 0;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   min-width: 320px;
