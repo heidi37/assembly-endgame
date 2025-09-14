@@ -18,7 +18,7 @@ header {
   color: #F9F4DA;
   border-radius: 4px;
   max-width: 325px;
-  margin: 0 auto;
+  margin: 1rem auto 0;
 }
 
 .won {
@@ -93,4 +93,12 @@ header {
   cursor: pointer;
   color: #222;
   margin: 2rem auto 0;
+}
+
+.right {
+  background-color: #10A95B;
+}
+
+.wrong {
+  background-color: #EC5D49;
 }

@@ -1,18 +1,44 @@
 import { useState } from "react"
 import "./App.css"
 import { languages } from "./languages"
+import { clsx } from "clsx"
 
 function App() {
-  const [currentWord, setCurrentWord] = useState('test')
-
+  //State values
+  const [currentWord, setCurrentWord] = useState("react")
+  const [guessedLetters, setGuessedLetters] = useState([])
+  //Derived values
+  const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length
+  //Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
-  const keys = alphabet.split("").map(key => (
-    <button className="key-buttons" key={key}>{key.toUpperCase()}</button>
-  ))
+  console.log(wrongGuessCount)
+
+  function addGuessedLetter(key) {
+    setGuessedLetters((prev) => (prev.includes(key) ? prev : [...prev, key]))
+  }
+
+  const keys = alphabet.split("").map((key) => {
+    const isRight = currentWord.includes(key) && guessedLetters.includes(key)
+    const isWrong = !currentWord.includes(key) && guessedLetters.includes(key)
+    return (
+      <button
+        className={clsx({
+          "key-buttons": true,
+          right: isRight,
+          wrong: isWrong,
+        })}
+        key={key}
+        onClick={() => addGuessedLetter(key)}
+      >
+        {key.toUpperCase()}
+      </button>
+    )
+  })
 
   const languageEls = languages.map((language) => (
-    <span className="chip"
+    <span
+      className="chip"
       key={language.name}
       style={{
         backgroundColor: language.backgroundColor,
@@ -24,7 +50,9 @@ function App() {
   ))
 
   const wordLetters = currentWord.split("").map((letter, index) => (
-    <span className="word-letters" key={index}>{letter.toUpperCase()}</span>
+    <span className="word-letters" key={index}>
+      {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
+    </span>
   ))
   return (
     <main>
