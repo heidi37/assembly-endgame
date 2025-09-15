@@ -2,6 +2,7 @@ import { useState } from "react"
 import "./App.css"
 import { languages } from "./languages"
 import { clsx } from "clsx"
+import { getFarewellText } from "./utils"
 
 function App() {
   //State values
@@ -9,10 +10,12 @@ function App() {
   const [guessedLetters, setGuessedLetters] = useState([])
   //Derived values
   const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length
+  const gameWon = guessedLetters.filter(letter => currentWord.includes(letter)).length === currentWord.length
+  const gameLost = wrongGuessCount >= languages.length - 1
+  const isGameOver = gameLost || gameWon
+  const isWrong = !gameWon && !gameLost && wrongGuessCount > 0
   //Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-  console.log(wrongGuessCount)
 
   function addGuessedLetter(key) {
     setGuessedLetters((prev) => (prev.includes(key) ? prev : [...prev, key]))
@@ -36,9 +39,16 @@ function App() {
     )
   })
 
-  const languageEls = languages.map((language) => (
+  
+
+  const languageEls = languages.map((language, index) => (
     <span
-      className="chip"
+      className={
+        clsx({
+          chip: true,
+          lost: index < wrongGuessCount
+        })
+      }
       key={language.name}
       style={{
         backgroundColor: language.backgroundColor,
@@ -63,14 +73,17 @@ function App() {
           from Assembly!
         </p>
       </header>
-      <section className="status won">
-        <h2>You win!</h2>
-        <p>Well done! 🎉</p>
+      <section className={clsx({status: true, won: gameWon, lost: gameLost, 'wrong-message': isWrong})}>
+        {gameWon && <h2>You win!</h2>}
+        {gameWon && <p>Well done! 🎉</p>}
+        {gameLost && <h2>Game over!</h2>}
+        {gameLost && <p>You lose! Better start learning Assembly 😭</p>}
+        {isWrong && <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>}
       </section>
       <section className="chips">{languageEls}</section>
       <section className="word">{wordLetters}</section>
       <section className="keyboard">{keys}</section>
-      <button className="new-game">New Game</button>
+      {isGameOver && <button className="new-game">New Game</button>}
     </main>
   )
 }
