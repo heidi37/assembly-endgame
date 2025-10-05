@@ -8,28 +8,32 @@ function App() {
   //State values
   const [currentWord, setCurrentWord] = useState("react")
   const [guessedLetters, setGuessedLetters] = useState([])
+  
   //Derived values
   const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length
   const gameWon = guessedLetters.filter(letter => currentWord.includes(letter)).length === currentWord.length
   const gameLost = wrongGuessCount >= languages.length - 1
   const isGameOver = gameLost || gameWon
-  const isWrong = !gameWon && !gameLost && wrongGuessCount > 0
+  const currentGuessCorrect = guessedLetters.length > 0 ? currentWord.includes(guessedLetters[guessedLetters.length - 1]) : true
+  
   //Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
+  //Add letter to array held in state when guessed
   function addGuessedLetter(key) {
     setGuessedLetters((prev) => (prev.includes(key) ? prev : [...prev, key]))
   }
 
+  //Check Letter and update keyboard
   const keys = alphabet.split("").map((key) => {
-    const isRight = currentWord.includes(key) && guessedLetters.includes(key)
-    const isWrong = !currentWord.includes(key) && guessedLetters.includes(key)
+    const isKeyRight = currentWord.includes(key) && guessedLetters.includes(key)
+    const isKeyWrong = !currentWord.includes(key) && guessedLetters.includes(key)
     return (
       <button
         className={clsx({
           "key-buttons": true,
-          right: isRight,
-          wrong: isWrong,
+          right: isKeyRight,
+          wrong: isKeyWrong,
         })}
         key={key}
         onClick={() => addGuessedLetter(key)}
@@ -40,7 +44,7 @@ function App() {
   })
 
   
-
+  //Keep track of chips/incorrect guesses
   const languageEls = languages.map((language, index) => (
     <span
       className={
@@ -59,6 +63,7 @@ function App() {
     </span>
   ))
 
+  //Show Correct Guesses in the word
   const wordLetters = currentWord.split("").map((letter, index) => (
     <span className="word-letters" key={index}>
       {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
@@ -73,12 +78,12 @@ function App() {
           from Assembly!
         </p>
       </header>
-      <section className={clsx({status: true, won: gameWon, lost: gameLost, 'wrong-message': isWrong})}>
+      <section className={clsx({status: true, won: gameWon, lost: gameLost, 'wrong-message': !currentGuessCorrect})}>
         {gameWon && <h2>You win!</h2>}
         {gameWon && <p>Well done! 🎉</p>}
         {gameLost && <h2>Game over!</h2>}
         {gameLost && <p>You lose! Better start learning Assembly 😭</p>}
-        {isWrong && <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>}
+        {!gameLost && !currentGuessCorrect && wrongGuessCount > 0 && <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>}
       </section>
       <section className="chips">{languageEls}</section>
       <section className="word">{wordLetters}</section>
