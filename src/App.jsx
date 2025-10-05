@@ -36,6 +36,7 @@ function App() {
           wrong: isKeyWrong,
         })}
         key={key}
+        disabled = {isGameOver}
         onClick={() => addGuessedLetter(key)}
       >
         {key.toUpperCase()}
