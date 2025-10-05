@@ -100,6 +100,10 @@ header {
   justify-content: center;
   border: 1px solid #D7D7D7;
   cursor: pointer;
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.2;
+  }
 }
 
 .new-game {
