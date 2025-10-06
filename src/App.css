@@ -15,7 +15,7 @@ header {
   flex-direction: column;
   padding: 1rem;
   margin: 1rem 0;
-  color: #F9F4DA;
+  color: #f9f4da;
   border-radius: 4px;
   max-width: 325px;
   margin: 1rem auto 0;
@@ -23,11 +23,11 @@ header {
 }
 
 .won {
-  background: #10A95B;
+  background: #10a95b;
 }
 
 .lost {
-  background: #BA2A2A;
+  background: #ba2a2a;
 }
 
 .chips {
@@ -37,41 +37,41 @@ header {
   justify-content: center;
   margin: 2rem auto;
   max-width: 325px;
-  .chip{
-    padding: .25rem;
+  .chip {
+    padding: 0.25rem;
     border-radius: 3px;
-    font-size: .75rem;
+    font-size: 0.75rem;
     font-weight: bold;
     position: relative;
   }
 }
 
 .chip.lost::before {
-    content: "💀";
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    font-size: 0.85rem;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+  content: "💀";
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  font-size: 0.85rem;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .word {
-  display:flex;
+  display: flex;
   justify-content: center;
   gap: 0.313rem;
   margin-top: 1rem;
 }
 
 .word-letters {
-  border-bottom: 1px solid #F9F4DA;
+  border-bottom: 1px solid #f9f4da;
   padding: 0.375rem;
   background: #323232;
-  color: #F9F4DA;
+  color: #f9f4da;
   font-size: 1.125rem;
   width: 2.5rem;
   height: 2.5rem;
@@ -91,14 +91,14 @@ header {
 }
 
 .key-buttons {
-  background: #FCBA29;
+  background: #fcba29;
   color: #222;
   font-weight: bold;
   width: 2.5rem;
   height: 2.5rem;
   display: flex;
   justify-content: center;
-  border: 1px solid #D7D7D7;
+  border: 1px solid #d7d7d7;
   cursor: pointer;
   &:disabled {
     cursor: not-allowed;
@@ -107,8 +107,8 @@ header {
 }
 
 .new-game {
-  background-color: #11B5E5;
-  border: 1px solid #D7D7D7;
+  background-color: #11b5e5;
+  border: 1px solid #d7d7d7;
   border-radius: 4px;
   width: 225px;
   height: 40x;
@@ -120,18 +120,30 @@ header {
 }
 
 .right {
-  background-color: #10A95B;
+  background-color: #10a95b;
 }
 
 .wrong {
-  background-color: #EC5D49;
+  background-color: #ec5d49;
 }
 
 .wrong-message {
-  background-color: #7A5EA7;
+  background-color: #7a5ea7;
   border: 1px dashed #323232;
   font-style: italic;
   p {
     font-size: 1rem !important;
   }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

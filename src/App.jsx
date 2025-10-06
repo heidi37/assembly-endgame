@@ -8,14 +8,22 @@ function App() {
   //State values
   const [currentWord, setCurrentWord] = useState("react")
   const [guessedLetters, setGuessedLetters] = useState([])
-  
+
   //Derived values
-  const wrongGuessCount = guessedLetters.filter(letter => !currentWord.includes(letter)).length
-  const gameWon = guessedLetters.filter(letter => currentWord.includes(letter)).length === currentWord.length
-  const gameLost = wrongGuessCount >= languages.length - 1
+  const wrongGuessCount = guessedLetters.filter(
+    (letter) => !currentWord.includes(letter)
+  ).length
+  const totalNumGuesses = languages.length - 1
+  const numGuessesLeft = totalNumGuesses - wrongGuessCount
+  const gameWon =
+    guessedLetters.filter((letter) => currentWord.includes(letter)).length ===
+    currentWord.length
+  const gameLost = wrongGuessCount >= totalNumGuesses
   const isGameOver = gameLost || gameWon
-  const currentGuessCorrect = guessedLetters.length > 0 ? currentWord.includes(guessedLetters[guessedLetters.length - 1]) : true
-  
+  const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
+  const currentGuessCorrect =
+    guessedLetters.length > 0 ? currentWord.includes(lastGuessedLetter) : true
+
   //Static values
   const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
@@ -27,7 +35,8 @@ function App() {
   //Check Letter and update keyboard
   const keys = alphabet.split("").map((key) => {
     const isKeyRight = currentWord.includes(key) && guessedLetters.includes(key)
-    const isKeyWrong = !currentWord.includes(key) && guessedLetters.includes(key)
+    const isKeyWrong =
+      !currentWord.includes(key) && guessedLetters.includes(key)
     return (
       <button
         className={clsx({
@@ -36,7 +45,9 @@ function App() {
           wrong: isKeyWrong,
         })}
         key={key}
-        disabled = {isGameOver}
+        disabled={isGameOver}
+        aria-disabled={guessedLetters.includes(key)}
+        aria-label={`Letter ${key}`}
         onClick={() => addGuessedLetter(key)}
       >
         {key.toUpperCase()}
@@ -44,16 +55,13 @@ function App() {
     )
   })
 
-  
   //Keep track of chips/incorrect guesses
   const languageEls = languages.map((language, index) => (
     <span
-      className={
-        clsx({
-          chip: true,
-          lost: index < wrongGuessCount
-        })
-      }
+      className={clsx({
+        chip: true,
+        lost: index < wrongGuessCount,
+      })}
       key={language.name}
       style={{
         backgroundColor: language.backgroundColor,
@@ -79,15 +87,44 @@ function App() {
           from Assembly!
         </p>
       </header>
-      <section className={clsx({status: true, won: gameWon, lost: gameLost, 'wrong-message': !currentGuessCorrect})}>
+      <section
+        aria-live="polite"
+        role="status"
+        className={clsx({
+          status: true,
+          won: gameWon,
+          lost: gameLost,
+          "wrong-message": !currentGuessCorrect,
+        })}
+      >
         {gameWon && <h2>You win!</h2>}
         {gameWon && <p>Well done! 🎉</p>}
         {gameLost && <h2>Game over!</h2>}
         {gameLost && <p>You lose! Better start learning Assembly 😭</p>}
-        {!gameLost && !currentGuessCorrect && wrongGuessCount > 0 && <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>}
+        {!gameLost && !currentGuessCorrect && wrongGuessCount > 0 && (
+          <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>
+        )}
       </section>
       <section className="chips">{languageEls}</section>
       <section className="word">{wordLetters}</section>
+      {/* Combined visually-hidden aria-live region for status updates */}
+      <section className="sr-only" aria-live="polite" role="status">
+        <p>
+          {currentWord.includes(lastGuessedLetter)
+            ? `Correct! The letter ${lastGuessedLetter} is in the word.`
+            : `Sorry, the letter ${lastGuessedLetter} is not in the word.`}
+          You have {numGuessesLeft} attempts left.
+        </p>
+        <p>
+          Current word:{" "}
+          {currentWord
+            .split("")
+            .map((letter) =>
+              guessedLetters.includes(letter) ? letter + "." : "blank."
+            )
+            .join(" ")}
+        </p>
+      </section>
       <section className="keyboard">{keys}</section>
       {isGameOver && <button className="new-game">New Game</button>}
     </main>
