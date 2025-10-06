@@ -16,9 +16,7 @@ function App() {
   ).length
   const totalNumGuesses = languages.length - 1
   const numGuessesLeft = totalNumGuesses - wrongGuessCount
-  const gameWon =
-    guessedLetters.filter((letter) => currentWord.includes(letter)).length ===
-    currentWord.length
+  const gameWon = currentWord.split("").every(letter => guessedLetters.includes(letter))
   const gameLost = wrongGuessCount >= totalNumGuesses
   const isGameOver = gameLost || gameWon
   const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
@@ -79,6 +77,14 @@ function App() {
       {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
     </span>
   ))
+
+
+  //Reset the game
+  function resetGame(){
+    setCurrentWord(getRandomWord())
+    setGuessedLetters([])
+  }
+
   return (
     <main>
       <header>
@@ -100,7 +106,7 @@ function App() {
       >
         {gameWon && <h2>You win!</h2>}
         {gameWon && <p>Well done! 🎉</p>}
-        {gameLost && <h2>Game over!</h2>}
+        {gameLost && <h2>Game over! {currentWord.toUpperCase()}</h2>}
         {gameLost && <p>You lose! Better start learning Assembly 😭</p>}
         {!gameLost && !currentGuessCorrect && wrongGuessCount > 0 && (
           <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>
@@ -127,7 +133,7 @@ function App() {
         </p>
       </section>
       <section className="keyboard">{keys}</section>
-      {isGameOver && <button className="new-game">New Game</button>}
+      {isGameOver && <button onClick={resetGame} className="new-game">New Game</button>}
     </main>
   )
 }
