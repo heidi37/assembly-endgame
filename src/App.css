@@ -20,6 +20,10 @@ header {
   max-width: 325px;
   margin: 1rem auto 0;
   height: 3.688rem;
+  h2 {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
 }
 
 .won {

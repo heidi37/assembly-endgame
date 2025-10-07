@@ -107,7 +107,7 @@ function App() {
           status: true,
           won: gameWon,
           lost: gameLost,
-          "wrong-message": !currentGuessCorrect,
+          "wrong-message": !currentGuessCorrect && !gameLost,
         })}
       >
         {gameWon && <h2>You win!</h2>}
