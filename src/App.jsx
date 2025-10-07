@@ -71,10 +71,14 @@ function App() {
     </span>
   ))
 
-  //Show Correct Guesses in the word
+  //Show Correct Guesses in the word and all letters at game over when lost
   const wordLetters = currentWord.split("").map((letter, index) => (
-    <span className="word-letters" key={index}>
-      {guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
+    <span className={clsx({
+          "word-letters": true,
+          wrong: gameLost && !guessedLetters.includes(letter),
+        })} key={index}>
+      {guessedLetters.includes(letter) ? letter.toUpperCase() :
+      gameLost && !guessedLetters.includes(letter) ? letter.toUpperCase() : ""}
     </span>
   ))
 
@@ -106,7 +110,7 @@ function App() {
       >
         {gameWon && <h2>You win!</h2>}
         {gameWon && <p>Well done! 🎉</p>}
-        {gameLost && <h2>Game over! {currentWord.toUpperCase()}</h2>}
+        {gameLost && <h2>Game over!</h2>}
         {gameLost && <p>You lose! Better start learning Assembly 😭</p>}
         {!gameLost && !currentGuessCorrect && wrongGuessCount > 0 && (
           <p>{getFarewellText(languages[wrongGuessCount - 1].name)}</p>
